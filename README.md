@@ -791,10 +791,10 @@ This project is created for educational purposes as part of the ServiceHive Full
 
 ## 📞 Contact
 
-**Developer:** [Your Name]  
-**Email:** [your.email@example.com]  
-**GitHub:** [@yourusername](https://github.com/yourusername)  
-**LinkedIn:** [Your LinkedIn](https://linkedin.com/in/yourprofile)
+**Developer:** Deeksha Naik 
+**Email:** naikdeeksh24912@gmail.com 
+**GitHub:** [@yourusername](https://github.com/DeekshaNaik028)  
+**LinkedIn:** https://www.linkedin.com/in/deeksha-naik-400608283/
 
 **Submission For:**  
 ServiceHive Technical Assessment  
