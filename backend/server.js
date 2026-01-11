@@ -60,6 +60,10 @@ app.get('/', (req, res) => {
   res.json({ message: 'GigFlow API is running' });
 });
 
+app.get('/api', (req, res) => {
+  res.json({ message: 'GigFlow API - Backend deployed on Vercel' });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -71,6 +75,12 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-httpServer.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Only start server if not in serverless environment
+if (process.env.NODE_ENV !== 'production') {
+  httpServer.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Export for Vercel serverless
+module.exports = app;
