@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from './redux/slices/authSlice';
 import Navbar from './components/layout/Navbar';
 import ProtectedRoute from './components/layout/ProtectedRoute';
@@ -12,10 +12,23 @@ import Register from './components/auth/Register';
 
 function App() {
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(getMe());
+    const token = localStorage.getItem('token');
+    if (token) {
+      dispatch(getMe());
+    }
   }, [dispatch]);
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
 
   return (
     <Router>

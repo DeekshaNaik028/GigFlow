@@ -5,7 +5,14 @@ import BidForm from '../bids/BidForm';
 const GigCard = ({ gig }) => {
   const [showBidForm, setShowBidForm] = useState(false);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  const isOwner = user?._id === gig.ownerId._id;
+  
+  // Safe check for user and gig owner
+  const isOwner = user?._id && gig?.ownerId?._id && user._id === gig.ownerId._id;
+
+  // Ensure gig data exists
+  if (!gig) {
+    return null;
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
@@ -29,11 +36,11 @@ const GigCard = ({ gig }) => {
         </div>
         <div className="text-right">
           <p className="text-sm text-gray-500">Posted by</p>
-          <p className="text-sm font-medium text-gray-900">{gig.ownerId.name}</p>
+          <p className="text-sm font-medium text-gray-900">{gig.ownerId?.name || 'Unknown'}</p>
         </div>
       </div>
 
-      {isAuthenticated && !isOwner && gig.status === 'open' && (
+      {isAuthenticated && user && !isOwner && gig.status === 'open' && (
         <>
           <button
             onClick={() => setShowBidForm(!showBidForm)}

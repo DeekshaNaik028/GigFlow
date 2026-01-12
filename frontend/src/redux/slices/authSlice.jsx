@@ -50,6 +50,9 @@ export const logout = createAsyncThunk(
       localStorage.removeItem('token');
       localStorage.removeItem('user');
     } catch (error) {
+      // Still clear local storage even if API call fails
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
       return rejectWithValue(error.response?.data?.message || 'Logout failed');
     }
   }
@@ -79,7 +82,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user: getUserFromStorage(),
-    isLoading: false,
+    isLoading: true, // Start as true to check auth on mount
     isAuthenticated: !!localStorage.getItem('token'),
     error: null
   },
@@ -122,6 +125,13 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
+        state.isLoading = false;
+      })
+      .addCase(logout.rejected, (state) => {
+        // Still logout on error
+        state.user = null;
+        state.isAuthenticated = false;
+        state.isLoading = false;
       })
       // Get Me
       .addCase(getMe.pending, (state) => {

@@ -25,7 +25,6 @@ const Navbar = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                
               </div>
               
               {/* Brand Name */}
@@ -39,7 +38,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            {isAuthenticated ? (
+            {isAuthenticated && user ? (
               <>
                 <Link
                   to="/"
@@ -62,11 +61,11 @@ const Navbar = () => {
                 <div className="flex items-center space-x-2 pl-2 border-l border-gray-300">
                   <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
                     <span className="text-indigo-600 font-semibold text-sm">
-                      {user?.name?.charAt(0).toUpperCase()}
+                      {user.name?.charAt(0).toUpperCase() || 'U'}
                     </span>
                   </div>
                   <span className="text-sm text-gray-600">
-                    {user?.name}
+                    {user.name}
                   </span>
                 </div>
                 <button
