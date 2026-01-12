@@ -1,12 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { authAPI } from '../../services/api';
 
+// Get user from localStorage
+const getUserFromStorage = () => {
+  try {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  } catch (error) {
+    return null;
+  }
+};
+
 // Async thunks
 export const register = createAsyncThunk(
   'auth/register',
   async (userData, { rejectWithValue }) => {
     try {
       const response = await authAPI.register(userData);
+      // Store token and user
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Registration failed');
@@ -19,6 +32,9 @@ export const login = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await authAPI.login(credentials);
+      // Store token and user
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data));
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
@@ -31,6 +47,8 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await authAPI.logout();
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Logout failed');
     }
@@ -41,9 +59,17 @@ export const getMe = createAsyncThunk(
   'auth/getMe',
   async (_, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return rejectWithValue('No token found');
+      }
       const response = await authAPI.getMe();
+      // Update user in localStorage
+      localStorage.setItem('user', JSON.stringify(response.data));
       return response.data;
     } catch (error) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
       return rejectWithValue(error.response?.data?.message || 'Failed to get user');
     }
   }
@@ -52,9 +78,9 @@ export const getMe = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    user: null,
+    user: getUserFromStorage(),
     isLoading: false,
-    isAuthenticated: false,
+    isAuthenticated: !!localStorage.getItem('token'),
     error: null
   },
   reducers: {
