@@ -33,23 +33,14 @@ const register = async (req, res) => {
       password
     });
 
-    // Generate token and set cookie
-    // Generate token and set cookie
+    // Generate token
     const token = generateToken(user._id);
-    
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      domain: process.env.NODE_ENV === 'production' ? undefined : undefined,
-      path: '/'
-    });
 
     res.status(201).json({
       _id: user._id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      token
     });
   } catch (error) {
     console.error('Register error:', error);
@@ -83,20 +74,14 @@ const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Generate token and set cookie
+    // Generate token
     const token = generateToken(user._id);
-    
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
 
     res.json({
       _id: user._id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      token
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -108,11 +93,6 @@ const login = async (req, res) => {
 // @route   POST /api/auth/logout
 // @access  Private
 const logout = (req, res) => {
-  res.cookie('token', '', {
-    httpOnly: true,
-    expires: new Date(0)
-  });
-  
   res.json({ message: 'Logged out successfully' });
 };
 
