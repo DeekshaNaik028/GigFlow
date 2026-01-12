@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMe, setLoading } from './redux/slices/authSlice';
 import Navbar from './components/layout/Navbar';
 import ProtectedRoute from './components/layout/ProtectedRoute';
+import LandingPage from './pages/LandingPage';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import MyGigs from './pages/MyGigs';
@@ -12,19 +13,17 @@ import Register from './components/auth/Register';
 
 function App() {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.auth);
+  const { isLoading, isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       dispatch(getMe());
     } else {
-      // No token, stop loading immediately
       dispatch(setLoading(false));
     }
   }, [dispatch]);
 
-  // Show loading state while checking authentication
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -38,7 +37,12 @@ function App() {
       <div className="min-h-screen bg-gray-50">
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Landing page for non-authenticated users */}
+          <Route 
+            path="/" 
+            element={isAuthenticated ? <Home /> : <LandingPage />} 
+          />
+          <Route path="/gigs" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route

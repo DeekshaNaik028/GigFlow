@@ -13,18 +13,34 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-lg">
+    <nav className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-3 group">
-              {/* Logo Icon */}
+              {/* Logo Icon - Matching Favicon */}
               <div className="relative">
-                <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-lg flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-200">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
+                <svg 
+                  className="w-10 h-10 transform group-hover:scale-110 transition-transform duration-200" 
+                  viewBox="0 0 64 64" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{stopColor: '#4F46E5', stopOpacity: 1}} />
+                      <stop offset="100%" style={{stopColor: '#6366F1', stopOpacity: 1}} />
+                    </linearGradient>
+                  </defs>
+                  <rect width="64" height="64" rx="12" fill="url(#logoGrad)"/>
+                  <path 
+                    d="M42 28V22C42 20.9391 41.5786 19.9217 40.8284 19.1716C40.0783 18.4214 39.0609 18 38 18H26C24.9391 18 23.9217 18.4214 23.1716 19.1716C22.4214 19.9217 22 20.9391 22 22V28M42 28H22M42 28V44C42 45.0609 41.5786 46.0783 40.8284 46.8284C40.0783 47.5786 39.0609 48 38 48H26C24.9391 48 23.9217 47.5786 23.1716 46.8284C22.4214 46.0783 22 45.0609 22 44V28M32 34H32.02" 
+                    stroke="white" 
+                    strokeWidth="3" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </div>
               
               {/* Brand Name */}
@@ -41,7 +57,7 @@ const Navbar = () => {
             {isAuthenticated && user ? (
               <>
                 <Link
-                  to="/"
+                  to="/gigs"
                   className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   Browse Gigs
@@ -59,12 +75,12 @@ const Navbar = () => {
                   My Gigs
                 </Link>
                 <div className="flex items-center space-x-2 pl-2 border-l border-gray-300">
-                  <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                    <span className="text-indigo-600 font-semibold text-sm">
+                  <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center shadow-md">
+                    <span className="text-white font-semibold text-sm">
                       {user.name?.charAt(0).toUpperCase() || 'U'}
                     </span>
                   </div>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 hidden sm:block">
                     {user.name}
                   </span>
                 </div>
@@ -85,7 +101,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm hover:shadow-md"
+                  className="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white px-4 py-2 rounded-md text-sm font-medium transition-all shadow-sm hover:shadow-md"
                 >
                   Register
                 </Link>
