@@ -8,14 +8,14 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { myBids, isLoading } = useSelector((state) => state.bids);
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
-    if (isAuthenticated && user) {
+    if (user) {
       dispatch(fetchMyBids());
     }
-  }, [dispatch, isAuthenticated, user]);
+  }, [dispatch, user]);
 
   // Socket.io for real-time notifications
   useEffect(() => {
@@ -38,15 +38,6 @@ const Dashboard = () => {
       socket.disconnect();
     };
   }, [user?._id, dispatch]);
-
-  // Show loading state while user is being fetched
-  if (!user) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-      </div>
-    );
-  }
 
   const getStatusColor = (status) => {
     switch (status) {

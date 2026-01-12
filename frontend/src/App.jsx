@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMe } from './redux/slices/authSlice';
+import { getMe, setLoading } from './redux/slices/authSlice';
 import Navbar from './components/layout/Navbar';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import Home from './pages/Home';
@@ -18,6 +18,9 @@ function App() {
     const token = localStorage.getItem('token');
     if (token) {
       dispatch(getMe());
+    } else {
+      // No token, stop loading immediately
+      dispatch(setLoading(false));
     }
   }, [dispatch]);
 
