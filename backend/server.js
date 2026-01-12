@@ -49,7 +49,28 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id);
   });
 });
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://gigflow-frontend-tau.vercel.app',
+  'https://gigflow-frontend.vercel.app',
+  process.env.FRONTEND_URL
+].filter(Boolean);
 
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || origin.includes('vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+  exposedHeaders: ['Set-Cookie']
+}));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/gigs', gigRoutes);
