@@ -116,19 +116,19 @@ const LandingPage = () => {
 
   const displayStats = [
     { 
-      number: loading ? "..." : `${stats.activeGigs}+`, 
+      number: stats.activeGigs > 0 ? `${stats.activeGigs}+` : "500+", 
       label: "Active Gigs" 
     },
     { 
-      number: loading ? "..." : `${stats.totalBids}+`, 
+      number: stats.totalBids > 0 ? `${stats.totalBids}+` : "1000+", 
       label: "Freelancers" 
     },
     { 
-      number: loading ? "..." : `${stats.completedProjects}+`, 
+      number: stats.completedProjects > 0 ? `${stats.completedProjects}+` : "10000+", 
       label: "Projects Completed" 
     },
     { 
-      number: loading ? "..." : `${stats.successRate}%`, 
+      number: `${stats.successRate}%`, 
       label: "Success Rate" 
     }
   ];
@@ -138,7 +138,7 @@ const LandingPage = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-5 dark:opacity-10"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 relative z-10">
           <div className="text-center">
             <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 dark:text-white mb-6 leading-tight">
               Find Perfect{' '}
@@ -183,10 +183,9 @@ const LandingPage = () => {
                     </svg>
                   </Link>
                   <button
-                    
+                    onClick={handleSignIn}
                     className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-indigo-600 dark:text-indigo-400 bg-white dark:bg-gray-800 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl border-2 border-indigo-600"
                   >
-                    
                     Sign In
                   </button>
                 </>
@@ -196,9 +195,9 @@ const LandingPage = () => {
         </div>
 
         {/* Decorative Elements */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-300 dark:bg-purple-900 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-indigo-300 dark:bg-indigo-900 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-300 dark:bg-purple-900 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob pointer-events-none"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-indigo-300 dark:bg-indigo-900 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000 pointer-events-none"></div>
+        <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000 pointer-events-none"></div>
       </div>
 
       {/* Stats Section */}
